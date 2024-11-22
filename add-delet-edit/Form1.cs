@@ -36,14 +36,18 @@ namespace add_delet_edit
             try
             {
                 // Criar conexão MySQL
-                Conecao = new MySqlConnection(data_source);
+                Conecao = new MySqlConnection(data_source); //criar uma nova instância da classe
 
                 // Comando SQL para inserção
-                string sql = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)";
-                MySqlCommand comando = new MySqlCommand(sql, Conecao);
+                string sql = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+                MySqlCommand comando = new MySqlCommand(sql, Conecao); //cria um objeto MySqlCommand que representa um comando SQL a ser executado
 
-                comando.Connection = Conecao; // 
-                // Usando parâmetros 
+                comando.Connection = Conecao; //definir a conexão que um comando deve usar para se comunicar com um banco de dados.
+
+                // Usando parâmetros
+                
+                comando.Prepare();
+
                 comando.Parameters.AddWithValue("@nome", txtNome.Text);
                 comando.Parameters.AddWithValue("@email", txtEmail.Text);
                 comando.Parameters.AddWithValue("@telefone", txtTelefone.Text);
@@ -128,7 +132,7 @@ namespace add_delet_edit
                 Conecao = new MySqlConnection(data_source);
 
                 // Comando SQL para buscar os dados
-                string sql = "DELETE FROM contato WHERE id LIKE @q";
+                string sql = "DELETE FROM coo WHERE id LIKE @q";
                 MySqlCommand comando = new MySqlCommand(sql, Conecao);
 
                 // Usando parâmetros para evitar SQL Injection

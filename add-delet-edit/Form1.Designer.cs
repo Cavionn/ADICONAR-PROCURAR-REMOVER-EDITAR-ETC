@@ -63,7 +63,7 @@
             // lsvLista
             // 
             this.lsvLista.HideSelection = false;
-            this.lsvLista.Location = new System.Drawing.Point(121, 9);
+            this.lsvLista.Location = new System.Drawing.Point(121, 12);
             this.lsvLista.Name = "lsvLista";
             this.lsvLista.Size = new System.Drawing.Size(360, 143);
             this.lsvLista.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             this.button1.Location = new System.Drawing.Point(12, 129);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(100, 91);
             this.button1.TabIndex = 3;
             this.button1.Text = "Adicionar";
             this.button1.UseVisualStyleBackColor = true;
@@ -123,7 +123,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(233, 155);
+            this.label5.Location = new System.Drawing.Point(308, 155);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(50, 13);
             this.label5.TabIndex = 9;
@@ -138,7 +138,7 @@
             // 
             // txtDeletar
             // 
-            this.txtDeletar.Location = new System.Drawing.Point(236, 171);
+            this.txtDeletar.Location = new System.Drawing.Point(311, 171);
             this.txtDeletar.Name = "txtDeletar";
             this.txtDeletar.Size = new System.Drawing.Size(100, 20);
             this.txtDeletar.TabIndex = 11;
@@ -155,7 +155,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(236, 197);
+            this.button3.Location = new System.Drawing.Point(311, 197);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 23);
             this.button3.TabIndex = 13;
@@ -167,7 +167,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(489, 243);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.txtDeletar);
