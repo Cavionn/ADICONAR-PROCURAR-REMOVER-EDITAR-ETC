@@ -38,19 +38,23 @@ namespace add_delet_edit
                 // Criar conexão MySQL
                 Conecao = new MySqlConnection(data_source); //criar uma nova instância da classe
 
+                MySqlCommand cmd = new MySqlCommand();
+
                 // Comando SQL para inserção
-                string sql = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
-                MySqlCommand comando = new MySqlCommand(sql, Conecao); //cria um objeto MySqlCommand que representa um comando SQL a ser executado
+                cmd.Connection = Conecao;
+                cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+                MySqlCommand comando = new MySqlCommand(cmd.CommandText, Conecao); //cria um objeto MySqlCommand que representa um comando SQL a ser executado
+
 
                 comando.Connection = Conecao; //definir a conexão que um comando deve usar para se comunicar com um banco de dados.
 
                 // Usando parâmetros
                 
-                comando.Prepare();
+                cmd.Prepare();
 
-                comando.Parameters.AddWithValue("@nome", txtNome.Text);
-                comando.Parameters.AddWithValue("@email", txtEmail.Text);
-                comando.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                cmd.Parameters.AddWithValue("@nome", txtNome.Text);
+                cmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
 
                 // Abrir conexão
                 Conecao.Open();
@@ -60,9 +64,10 @@ namespace add_delet_edit
 
                 MessageBox.Show("Dados inseridos com sucesso!");
             }
-            catch (Exception ex)
+            catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                MessageBox.Show("Erro: " + ex.Message); // Exibe a mensagem de erro
+                MessageBox.Show("Erro: " + ex.Number + "Ocorreu: " + ex.Message , 
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); // Exibe a mensagem de erro
             }
             finally
             {
