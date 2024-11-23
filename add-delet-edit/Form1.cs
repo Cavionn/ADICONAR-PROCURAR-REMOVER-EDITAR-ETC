@@ -42,25 +42,27 @@ namespace add_delet_edit
 
                 // Comando SQL para inserção
                 cmd.Connection = Conecao;
-                cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
-                MySqlCommand comando = new MySqlCommand(cmd.CommandText, Conecao); //cria um objeto MySqlCommand que representa um comando SQL a ser executado
-
-
-                comando.Connection = Conecao; //definir a conexão que um comando deve usar para se comunicar com um banco de dados.
-
-                // Usando parâmetros
-                
-                cmd.Prepare();
-
+                Conecao.Open();
+             
                 cmd.Parameters.AddWithValue("@nome", txtNome.Text);
                 cmd.Parameters.AddWithValue("@email", txtEmail.Text);
                 cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
 
-                // Abrir conexão
-                Conecao.Open();
+                
+                cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+
+                cmd.Prepare();
+
+                cmd.ExecuteNonQuery();
+
+                /*MySqlCommand comando = new MySqlCommand(cmd.CommandText, Conecao);*/ //cria um objeto MySqlCommand que representa um comando SQL a ser executado
+
+
+                cmd.Connection = Conecao; //definir a conexão que um comando deve usar para se comunicar com um banco de dados.
+
 
                 // Executar comando
-                comando.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
                 MessageBox.Show("Dados inseridos com sucesso!");
             }
