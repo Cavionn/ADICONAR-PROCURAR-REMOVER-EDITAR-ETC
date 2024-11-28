@@ -14,7 +14,10 @@ namespace add_delet_edit
     public partial class Form1 : Form
     {
         private MySqlConnection Conecao;
-        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_agenda2";
+
+        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_Agenda2";
+
+        private int? id_contato_sel = null;
         public Form1()
         {
             InitializeComponent();
@@ -35,6 +38,7 @@ namespace add_delet_edit
         {
             try
             {
+
                 // Criar conexão MySQL
                 Conecao = new MySqlConnection(data_source); //criar uma nova instância da classe
 
@@ -42,18 +46,36 @@ namespace add_delet_edit
 
                 // Comando SQL para inserção
                 cmd.Connection = Conecao;
+
                 Conecao.Open();
              
                 cmd.Parameters.AddWithValue("@nome", txtNome.Text);
                 cmd.Parameters.AddWithValue("@email", txtEmail.Text);
                 cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
+                cmd.Parameters.AddWithValue("@id", id_contato_sel);
 
+             
+                if(id_contato_sel == null) //Caso a caixa for nula fazer um insert -- nula diferente de zero
+                {
+                    cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+
+                    cmd.Prepare();
+
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    cmd.CommandText = "UPDATE coo SET nome=@nome, email=@email, telefone=@telefone WHERE id=@id"; //inserir um novo registro na tabela
+
+                    cmd.Prepare();
+
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("O contato foi atualizado",
+                        "Concluido com Sucesso" , MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
                 
-                cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
-
-                cmd.Prepare();
-
-                cmd.ExecuteNonQuery();
 
                 /*MySqlCommand comando = new MySqlCommand(cmd.CommandText, Conecao);*/ //cria um objeto MySqlCommand que representa um comando SQL a ser executado
 
@@ -179,6 +201,24 @@ namespace add_delet_edit
             {
                 Conecao.Close();
             }
+        }
+
+        private void lsvLista_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListView.SelectedListViewItemCollection items_selecionados = lsvLista.SelectedItems; //Salvou a alteração dentro do item selecionado e escolhe qual pegar 
+
+            foreach (ListViewItem item in items_selecionados)//Criação de uma classe 
+            {
+                id_contato_sel = Convert.ToInt32(item.SubItems[0].Text);
+
+                txtNome.Text = item.SubItems[1].Text;//Percorrendo a lista da lista, e pede para ler o text box 1 e pegar o sub item do item 1 e jogar no campo
+
+                txtEmail.Text = item.SubItems[2].Text;
+
+                txtTelefone.Text = item.SubItems[3].Text;
+
+            } 
+
         }
     }
 }
