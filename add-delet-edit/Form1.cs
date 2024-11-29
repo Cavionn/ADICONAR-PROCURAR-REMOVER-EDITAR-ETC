@@ -17,7 +17,7 @@ namespace add_delet_edit
 
         private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_Agenda2";
 
-        private int? id_contato_sel = null;
+        private int? id_contatos_selecionado = null;
         public Form1()
         {
             InitializeComponent();
@@ -27,6 +27,7 @@ namespace add_delet_edit
             lsvLista.AllowColumnReorder = true;
             lsvLista.GridLines = true;
 
+            //Organização do List View
             lsvLista.Columns.Add("ID", 30, HorizontalAlignment.Left);
             lsvLista.Columns.Add("Nome", 150, HorizontalAlignment.Left);
             lsvLista.Columns.Add("Email", 150, HorizontalAlignment.Left);
@@ -47,27 +48,29 @@ namespace add_delet_edit
                 // Comando SQL para inserção
                 cmd.Connection = Conecao;
 
-                Conecao.Open();
-             
+                Conecao.Open(); //Abrea a conecao com o banco de dados
+
+                //Passa o parametro cmd e adiciona o valor, adicionando parâmetros a um comando SQL
+
                 cmd.Parameters.AddWithValue("@nome", txtNome.Text);
                 cmd.Parameters.AddWithValue("@email", txtEmail.Text);
                 cmd.Parameters.AddWithValue("@telefone", txtTelefone.Text);
-                cmd.Parameters.AddWithValue("@id", id_contato_sel);
+                cmd.Parameters.AddWithValue("@id", id_contatos_selecionado);
 
              
-                if(id_contato_sel == null) //Caso a caixa for nula fazer um insert -- nula diferente de zero
+                if(id_contatos_selecionado == null) //Caso a caixa for nula fazer um insert -- nula diferente de zero
                 {
                     cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
 
                     cmd.Prepare();
 
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery(); // para executar uma instrução SQL que não retorna linhas, como INSERT, UPDATE, DELETE, ou operações de catálogo (como criar tabelas). Esse método retorna o número de linhas afetadas pela execução do comando
                 }
                 else
                 {
                     cmd.CommandText = "UPDATE coo SET nome=@nome, email=@email, telefone=@telefone WHERE id=@id"; //inserir um novo registro na tabela
 
-                    cmd.Prepare();
+                    cmd.Prepare(); //preparar um comando SQL antes de sua execução.
 
                     cmd.ExecuteNonQuery();
 
@@ -95,7 +98,7 @@ namespace add_delet_edit
             }
             finally
             {
-                Conecao.Close();
+                Conecao.Close(); //fecha a conecao com o banco de dados
             }
         }
 
@@ -209,9 +212,11 @@ namespace add_delet_edit
 
             foreach (ListViewItem item in items_selecionados)//Criação de uma classe 
             {
-                id_contato_sel = Convert.ToInt32(item.SubItems[0].Text);
+                id_contatos_selecionado = Convert.ToInt32(item.SubItems[0].Text); //Converte a variavel global id_contatos_selecionados
 
-                txtNome.Text = item.SubItems[1].Text;//Percorrendo a lista da lista, e pede para ler o text box 1 e pegar o sub item do item 1 e jogar no campo
+                //Percorrendo a lista da lista, e pede para ler o text box 1 e pegar o sub item do item 1 e jogar no campo
+
+                txtNome.Text = item.SubItems[1].Text;
 
                 txtEmail.Text = item.SubItems[2].Text;
 
