@@ -15,7 +15,7 @@ namespace add_delet_edit
     {
         private MySqlConnection Conecao;
 
-        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_Agenda2";
+        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_contatos";
 
         private int? id_contatos_selecionado = null;
         public Form1()
@@ -61,6 +61,7 @@ namespace add_delet_edit
                 if(id_contatos_selecionado == null) //Caso a caixa for nula fazer um insert -- nula diferente de zero
                 {
                     cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+
 
                     cmd.Prepare();
 
@@ -224,6 +225,46 @@ namespace add_delet_edit
 
             } 
 
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //Variavel conf armasena a resposta do usuario dentro da avriavel para ser checada no if
+                DialogResult conf = MessageBox.Show("Você deseja fazer a exclusão ?", "Você realmente tem certeza ?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning); //Exibir uma mensagem de erro antes da exclusão do item
+                
+                if (conf == DialogResult.Yes)
+                {
+
+                    //Criar uma conexão
+                    Conecao = new MySqlConnection(data_source);
+                    Conecao.Open();
+                    //Cria a variavel comando
+                    MySqlCommand comando = new MySqlCommand();
+
+                    // Comando SQL para inserção
+                    comando.Connection = Conecao;
+
+                    comando.Parameters.AddWithValue("@id", id_contatos_selecionado);//Usa a propriedade do parametro 
+                  
+                    comando.CommandText = "DELETE FROM coo WHERE id=@id"; //Deletar um item
+
+                    comando.Prepare(); //preparar um comando SQL antes de sua execução.
+
+                    comando.ExecuteNonQuery();
+
+                    MessageBox.Show("O contato foi removido",
+                                    "Concluido com Sucesso", 
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+
+            catch
+            {
+
+            }
         }
     }
 }
