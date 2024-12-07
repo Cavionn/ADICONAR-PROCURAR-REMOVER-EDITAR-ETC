@@ -1,0 +1,57 @@
+1-Adicionar um Context Menu							*OBS: Para excluir apenas uma linha 
+										Linha no banco usar o comando: DELETE * FROM contato
+															Where id = "Número id";*
+
+2-Clicar o botão direito
+
+3-Editar itens
+
+4-Adicionar um item novo e mudar o text dele para Excluir Contato e dar OK
+
+5-Clicar no list view
+
+6-Clicar em prorpiedades 
+
+7-Selecionar o centext menu strip dento dele mesmo
+
+8-Selecionar o objeto tool strip menu
+
+9-Marcar o click e dar um enter
+
+10-Dentro a ação que foi criada digitar:
+ry
+            {
+                //Variavel conf armasena a resposta do usuario dentro da avriavel para ser checada no if
+                DialogResult conf = MessageBox.Show("Você deseja fazer a exclusão ?", "Você realmente tem certeza ?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning); //Exibir uma mensagem de erro antes da exclusão do item
+                
+                if (conf == DialogResult.Yes)
+                {
+
+                    //Criar uma conexão
+                    Conecao = new MySqlConnection(data_source);
+                    Conecao.Open();
+                    //Cria a variavel comando
+                    MySqlCommand comando = new MySqlCommand();
+
+                    // Comando SQL para inserção
+                    comando.Connection = Conecao;
+
+                    comando.Parameters.AddWithValue("@id", id_contatos_selecionado);//Usa a propriedade do parametro 
+                  
+                    comando.CommandText = "DELETE FROM coo WHERE id=@id"; //Deletar um item
+
+                    comando.Prepare(); //preparar um comando SQL antes de sua execução.
+
+                    comando.ExecuteNonQuery();
+
+                    MessageBox.Show("O contato foi removido",
+                                    "Concluido com Sucesso", 
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+
+            catch
+            {
+
+            }
