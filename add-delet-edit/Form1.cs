@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,12 +16,13 @@ namespace add_delet_edit
     {
         private MySqlConnection Conecao;
 
-        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_contatos";
+        private string data_source = "datasource=localhost;port=3306;username=root;password='';database=db_agenda";
 
         private int? id_contatos_selecionado = null;
         public Form1()
         {
             InitializeComponent();
+
 
             lsvLista.View = View.Details;
             lsvLista.LabelEdit = true;
@@ -60,7 +62,7 @@ namespace add_delet_edit
              
                 if(id_contatos_selecionado == null) //Caso a caixa for nula fazer um insert -- nula diferente de zero
                 {
-                    cmd.CommandText = "INSERT INTO coo (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
+                    cmd.CommandText = "INSERT INTO contato (nome, email, telefone) VALUES (@nome, @email, @telefone)"; //inserir um novo registro na tabela
 
 
                     cmd.Prepare();
@@ -69,7 +71,7 @@ namespace add_delet_edit
                 }
                 else
                 {
-                    cmd.CommandText = "UPDATE coo SET nome=@nome, email=@email, telefone=@telefone WHERE id=@id"; //inserir um novo registro na tabela
+                    cmd.CommandText = "UPDATE contato SET nome=@nome, email=@email, telefone=@telefone WHERE id=@id"; //inserir um novo registro na tabela
 
                     cmd.Prepare(); //preparar um comando SQL antes de sua execução.
 
@@ -113,7 +115,7 @@ namespace add_delet_edit
                 Conecao = new MySqlConnection(data_source);
 
                 // Comando SQL para buscar os dados
-                string sql = "SELECT * FROM coo WHERE nome LIKE @q OR email LIKE @q OR id LIKE @q";
+                string sql = "SELECT * FROM contato WHERE nome LIKE @q OR email LIKE @q OR id LIKE @q";
                 MySqlCommand comando = new MySqlCommand(sql, Conecao);
 
                 // Usando parâmetros 
@@ -159,43 +161,41 @@ namespace add_delet_edit
         {
             try
             {
-                string q = "%" + txtDeletar.Text + "%"; // Adiciona os % para a busca
+                DialogResult conf = MessageBox.Show("Você deseja fazer a exclusão ?", "Você realmente tem certeza ?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
-                // Criar conexão MySQL
-                Conecao = new MySqlConnection(data_source);
-
-                // Comando SQL para buscar os dados
-                string sql = "DELETE FROM coo WHERE id LIKE @q";
-                MySqlCommand comando = new MySqlCommand(sql, Conecao);
-
-                // Usando parâmetros para evitar SQL Injection
-                comando.Parameters.AddWithValue("@q", q);
-
-                // Abrir conexão
-                Conecao.Open();
-
-                // Executar comando
-                MySqlDataReader reader = comando.ExecuteReader();
-
-                // Limpar itens do ListView antes de adicionar novos
-                lsvLista.Items.Clear();
-
-                // Preencher o ListView com os resultados
-                while (reader.Read())
+                if (conf == DialogResult.Yes)
                 {
-                    string[] row =
+
+
+                    MySqlCommand comando = new MySqlCommand();
+
+                    Conecao = new MySqlConnection(data_source);
+
+                    Conecao.Open();//Abre a Conexão
+
+                    if (lsvLista.SelectedItems.Count > 0)
                     {
-                        reader.GetValue(0).ToString(),// ID
-                        reader.GetString(1),// Nome
-                        reader.GetString(2),//Email
-                        reader.GetValue(3).ToString()// Telefone
-                };
 
-                    var linha_listview = new ListViewItem(row);
-                    lsvLista.Items.Add(linha_listview);
+
+                        string identificador = lsvLista.SelectedItems[0].Text; //atribuindo o texto do primeiro item selecionado em um controle ListView a uma variável
+                        comando.Connection = Conecao;
+
+
+
+                        comando.CommandText = "DELETE FROM contato WHERE id=" + identificador;
+
+                        comando.Prepare();
+
+                        comando.ExecuteNonQuery();
+
+                        MessageBox.Show("O contato foi removido",
+                                           "Concluido com Sucesso",
+                                           MessageBoxButtons.OK,
+                                           MessageBoxIcon.Information);
+
+                        MySqlDataReader reader = comando.ExecuteReader();
+                    }
                 }
-
-                MessageBox.Show("Busca realizada com sucesso!");
             }
             catch (Exception ex)
             {
@@ -248,7 +248,7 @@ namespace add_delet_edit
 
                     comando.Parameters.AddWithValue("@id", id_contatos_selecionado);//Usa a propriedade do parametro 
                   
-                    comando.CommandText = "DELETE FROM coo WHERE id=@id"; //Deletar um item
+                    comando.CommandText = "DELETE FROM contato WHERE id=@id"; //Deletar um item
 
                     comando.Prepare(); //preparar um comando SQL antes de sua execução.
 
@@ -261,10 +261,13 @@ namespace add_delet_edit
                 }
             }
 
-            catch
+            catch (MySqlException ex)
             {
-
+                MessageBox.Show("Erro: " + ex.Number + " Ocorreu " + ex.Number + " Erro");
             }
+
         }
+
+       
     }
 }
