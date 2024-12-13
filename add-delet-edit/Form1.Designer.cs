@@ -45,6 +45,7 @@
             this.txtDeletar = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.Atualiza = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,12 +85,12 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 69);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(203, 36);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 32);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(202, 32);
             this.toolStripMenuItem1.Text = "Excluir Contato";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -198,11 +199,22 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // Atualiza
+            // 
+            this.Atualiza.Location = new System.Drawing.Point(510, 242);
+            this.Atualiza.Name = "Atualiza";
+            this.Atualiza.Size = new System.Drawing.Size(96, 96);
+            this.Atualiza.TabIndex = 14;
+            this.Atualiza.Text = "Atualiza";
+            this.Atualiza.UseVisualStyleBackColor = true;
+            this.Atualiza.Click += new System.EventHandler(this.Atualiza_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(734, 374);
+            this.Controls.Add(this.Atualiza);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.txtDeletar);
@@ -244,6 +256,7 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button Atualiza;
     }
 }
 

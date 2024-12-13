@@ -316,5 +316,9 @@ namespace add_delet_edit
             }
         }
 
+        private void Atualiza_Click(object sender, EventArgs e)
+        {
+            AtualizaLista();
+        }
     }
 }
